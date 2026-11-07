@@ -172,29 +172,47 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         lastMapTime = now
         mapExec.execute {
             try {
-                buildMap(l)?.let {
-                    mapBitmap = it
+                val m = buildMap(l)
+                if (m != null) {
+                    mapBitmap = m
                     lastMapLoc = l
+                    mapError = null
+                } else if (mapError == null) {
+                    mapError = "Harita karoları indirilemedi"
                 }
-            } catch (_: Throwable) {
+            } catch (t: Throwable) {
+                mapError = "${t.javaClass.simpleName}: ${t.message}"
             } finally {
                 mapBusy = false
             }
         }
     }
 
-    private fun download(url: String): Bitmap? = try {
-        val conn = URL(url).openConnection() as HttpURLConnection
-        conn.connectTimeout = 5000
-        conn.readTimeout = 5000
-        conn.setRequestProperty("User-Agent", "Buradayim/1.0 (Android camera app)")
-        val opts = BitmapFactory.Options().apply {
-            inScaled = false
-            inPreferredConfig = Bitmap.Config.ARGB_8888
+    @Volatile var mapError: String? = null
+        private set
+
+    private fun download(url: String): Bitmap? {
+        return try {
+            val conn = URL(url).openConnection() as HttpURLConnection
+            conn.connectTimeout = 6000
+            conn.readTimeout = 6000
+            conn.setRequestProperty("User-Agent", "Buradayim/1.0 (Android camera app)")
+            val code = conn.responseCode
+            if (code != 200) {
+                mapError = "HTTP $code (${URL(url).host})"
+                return null
+            }
+            val opts = BitmapFactory.Options().apply {
+                inScaled = false
+                inPreferredConfig = Bitmap.Config.ARGB_8888
+            }
+            val bmp = conn.inputStream.use { BitmapFactory.decodeStream(it, null, opts) }
+            if (bmp == null) mapError = "Karo çözülemedi (${URL(url).host})"
+            bmp
+        } catch (e: Exception) {
+            mapError = "${e.javaClass.simpleName}: ${e.message}"
+            null
         }
-        conn.inputStream.use { BitmapFactory.decodeStream(it, null, opts) }
-    } catch (_: Exception) {
-        null
     }
 
     /** 512 px'lik keskin (@2x) harita karosu; olmazsa OSM karosunu büyütür. */

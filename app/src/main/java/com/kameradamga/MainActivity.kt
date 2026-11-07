@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
     private var flashState = 0 // 0 kapalı, 1 otomatik, 2 açık
     private var countingDown = false
     private var recIndex: Int? = null
+    private var lastMapError: String? = null
 
     private var deviceRotation = Surface.ROTATION_0
     @Volatile private var drawRotation = Surface.ROTATION_0
@@ -125,6 +126,13 @@ class MainActivity : AppCompatActivity() {
     private val ticker = object : Runnable {
         override fun run() {
             liveLines = source.lines(recIndex ?: (prefs.index + 1))
+            if (prefs.showMap) {
+                val e = source.mapError
+                if (e != null && e != lastMapError) {
+                    lastMapError = e
+                    toast("Harita: $e")
+                }
+            }
             main.postDelayed(this, 500)
         }
     }
