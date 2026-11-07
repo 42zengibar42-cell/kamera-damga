@@ -116,6 +116,7 @@ class MainActivity : AppCompatActivity() {
                     else -> Surface.ROTATION_0
                 }
                 imageCapture?.targetRotation = deviceRotation
+                if (recording == null) drawRotation = deviceRotation
             }
         }
     }
@@ -291,24 +292,44 @@ class MainActivity : AppCompatActivity() {
         val bw = frame.size.width
         val bh = frame.size.height
         val rot = camera?.cameraInfo?.getSensorRotationDegrees(drawRotation) ?: 90
+
+        // Kamera tamponu hedeften (video: 16:9, önizleme: 4:3) daha geniş olabilir;
+        // görünen ve kaydedilen kısım ortadaki kesittir. Damgayı o kesite göre çiz.
+        var target = if (videoMode) 16f / 9f else 4f / 3f
+        if (bw < bh) target = 1f / target
+        val bufAspect = bw.toFloat() / bh
+        val cropW: Float
+        val cropH: Float
+        if (bufAspect > target) {
+            cropH = bh.toFloat(); cropW = bh * target
+        } else {
+            cropW = bw.toFloat(); cropH = bw / target
+        }
+
         canvas.save()
-        val uw: Int
-        val uh: Int
+        val uw: Float
+        val uh: Float
+        val ucw: Float
+        val uch: Float
         when (rot) {
             90 -> {
-                canvas.translate(0f, bh.toFloat()); canvas.rotate(-90f); uw = bh; uh = bw
+                canvas.translate(0f, bh.toFloat()); canvas.rotate(-90f)
+                uw = bh.toFloat(); uh = bw.toFloat(); ucw = cropH; uch = cropW
             }
             180 -> {
-                canvas.translate(bw.toFloat(), bh.toFloat()); canvas.rotate(180f); uw = bw; uh = bh
+                canvas.translate(bw.toFloat(), bh.toFloat()); canvas.rotate(180f)
+                uw = bw.toFloat(); uh = bh.toFloat(); ucw = cropW; uch = cropH
             }
             270 -> {
-                canvas.translate(bw.toFloat(), 0f); canvas.rotate(90f); uw = bh; uh = bw
+                canvas.translate(bw.toFloat(), 0f); canvas.rotate(90f)
+                uw = bh.toFloat(); uh = bw.toFloat(); ucw = cropH; uch = cropW
             }
             else -> {
-                uw = bw; uh = bh
+                uw = bw.toFloat(); uh = bh.toFloat(); ucw = cropW; uch = cropH
             }
         }
-        StampRenderer.draw(canvas, uw, uh, liveLines, cfg)
+        canvas.translate((uw - ucw) / 2f, (uh - uch) / 2f)
+        StampRenderer.draw(canvas, ucw.toInt(), uch.toInt(), liveLines, cfg)
         canvas.restore()
         return true
     }
@@ -555,7 +576,7 @@ class MainActivity : AppCompatActivity() {
             if (ev is VideoRecordEvent.Finalize) {
                 recording = null
                 recIndex = null
-                drawRotation = Surface.ROTATION_0
+                drawRotation = deviceRotation
                 shutter.setBackgroundResource(R.drawable.shutter_video)
                 toast(getString(if (ev.hasError()) R.string.save_error else R.string.saved))
             }

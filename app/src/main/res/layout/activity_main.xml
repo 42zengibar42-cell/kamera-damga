@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#000000">
-
-    <androidx.camera.view.PreviewView
-        android:id="@+id/previewView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-    <com.kameradamga.GridOverlay
-        android:id="@+id/grid"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+    android:background="#000000"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="#66000000"
+        android:background="#000000"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp">
@@ -50,22 +39,38 @@
             android:text="🔄" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtCountdown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:shadowColor="#000000"
-        android:shadowRadius="8"
-        android:textColor="#FFFFFF"
-        android:textSize="110sp"
-        android:visibility="gone" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <androidx.camera.view.PreviewView
+            android:id="@+id/previewView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.kameradamga.GridOverlay
+            android:id="@+id/grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/txtCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:shadowColor="#000000"
+            android:shadowRadius="8"
+            android:textColor="#FFFFFF"
+            android:textSize="110sp"
+            android:visibility="gone" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#66000000"
+        android:background="#000000"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         android:paddingBottom="20dp"
@@ -94,4 +99,4 @@
             android:layout_marginTop="10dp"
             android:background="@drawable/shutter_photo" />
     </LinearLayout>
-</FrameLayout>
+</LinearLayout>
