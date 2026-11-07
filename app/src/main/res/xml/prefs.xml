@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="@string/cat_stamp">
+        <SwitchPreferenceCompat
+            android:key="show_datetime"
+            android:title="@string/show_datetime"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="show_address"
+            android:title="@string/show_address"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="show_coords"
+            android:title="@string/show_coords"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="show_alt_speed"
+            android:title="@string/show_alt_speed"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="show_heading"
+            android:title="@string/show_heading"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="show_index"
+            android:title="@string/show_index"
+            android:defaultValue="false" />
+        <EditTextPreference
+            android:key="custom_text"
+            android:title="@string/custom_text"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/cat_look">
+        <ListPreference
+            android:key="position"
+            android:title="@string/position"
+            android:entries="@array/position_entries"
+            android:entryValues="@array/position_values"
+            android:defaultValue="br"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:key="text_size"
+            android:title="@string/text_size"
+            android:entries="@array/size_entries"
+            android:entryValues="@array/size_values"
+            android:defaultValue="m"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:key="text_color"
+            android:title="@string/text_color"
+            android:entries="@array/color_entries"
+            android:entryValues="@array/color_values"
+            android:defaultValue="white"
+            app:useSimpleSummaryProvider="true" />
+        <SeekBarPreference
+            android:key="text_opacity"
+            android:title="@string/text_opacity"
+            android:defaultValue="100"
+            android:max="100"
+            app:min="10"
+            app:showSeekBarValue="true" />
+        <ListPreference
+            android:key="bg_color"
+            android:title="@string/bg_color"
+            android:entries="@array/bgcolor_entries"
+            android:entryValues="@array/bgcolor_values"
+            android:defaultValue="black"
+            app:useSimpleSummaryProvider="true" />
+        <SeekBarPreference
+            android:key="bg_opacity"
+            android:title="@string/bg_opacity"
+            android:defaultValue="0"
+            android:max="100"
+            app:min="0"
+            app:showSeekBarValue="true" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/cat_camera">
+        <ListPreference
+            android:key="video_quality"
+            android:title="@string/video_quality"
+            android:entries="@array/quality_entries"
+            android:entryValues="@array/quality_values"
+            android:defaultValue="fhd"
+            app:useSimpleSummaryProvider="true" />
+        <SwitchPreferenceCompat
+            android:key="mirror_front"
+            android:title="@string/mirror_front"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="keep_original"
+            android:title="@string/keep_original"
+            android:defaultValue="false" />
+        <SwitchPreferenceCompat
+            android:key="tap_shoot"
+            android:title="@string/tap_shoot"
+            android:defaultValue="false" />
+        <SwitchPreferenceCompat
+            android:key="shutter_sound"
+            android:title="@string/shutter_sound"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
+            android:key="grid"
+            android:title="@string/grid"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+</PreferenceScreen>

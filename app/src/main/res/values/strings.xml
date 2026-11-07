@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kamera Damga</string>
+    <string name="mode_photo">Fotoğraf</string>
+    <string name="mode_video">Video</string>
+    <string name="settings">Ayarlar</string>
+    <string name="saved">Kaydedildi</string>
+    <string name="save_error">Kaydedilemedi</string>
+    <string name="perm_needed">Kamera izni gerekli</string>
+    <string name="alt_fmt">Yükseklik: %1$.1f m</string>
+    <string name="speed_fmt">Hız: %1$.1f km/s</string>
+    <string name="index_fmt">Sıra no: %1$d</string>
+
+    <string name="cat_stamp">Damga bilgileri</string>
+    <string name="cat_look">Görünüm</string>
+    <string name="cat_camera">Kamera</string>
+    <string name="show_datetime">Tarih ve saat</string>
+    <string name="show_address">Adres</string>
+    <string name="show_coords">Koordinatlar</string>
+    <string name="show_alt_speed">Yükseklik ve hız</string>
+    <string name="show_heading">Pusula yönü</string>
+    <string name="show_index">Sıra numarası</string>
+    <string name="custom_text">Kendi yazın</string>
+    <string name="position">Konum</string>
+    <string name="text_size">Yazı boyutu</string>
+    <string name="text_color">Yazı rengi</string>
+    <string name="bg_color">Arka plan rengi</string>
+    <string name="bg_opacity">Arka plan saydamlığı (%)</string>
+    <string name="text_opacity">Yazı opaklığı (%)</string>
+    <string name="grid">Izgara</string>
+    <string name="shutter_sound">Deklanşör sesi</string>
+    <string name="tap_shoot">Dokununca fotoğraf çek</string>
+    <string name="mirror_front">Ön kamerayı aynala</string>
+    <string name="keep_original">Orijinal fotoğrafı da sakla</string>
+    <string name="video_quality">Video kalitesi</string>
+
+    <string-array name="position_entries">
+        <item>Sağ alt</item>
+        <item>Sol alt</item>
+        <item>Sağ üst</item>
+        <item>Sol üst</item>
+    </string-array>
+    <string-array name="position_values">
+        <item>br</item>
+        <item>bl</item>
+        <item>tr</item>
+        <item>tl</item>
+    </string-array>
+    <string-array name="size_entries">
+        <item>Küçük</item>
+        <item>Orta</item>
+        <item>Büyük</item>
+    </string-array>
+    <string-array name="size_values">
+        <item>s</item>
+        <item>m</item>
+        <item>l</item>
+    </string-array>
+    <string-array name="color_entries">
+        <item>Beyaz</item>
+        <item>Sarı</item>
+        <item>Yeşil</item>
+        <item>Kırmızı</item>
+        <item>Camgöbeği</item>
+        <item>Siyah</item>
+    </string-array>
+    <string-array name="color_values">
+        <item>white</item>
+        <item>yellow</item>
+        <item>green</item>
+        <item>red</item>
+        <item>cyan</item>
+        <item>black</item>
+    </string-array>
+    <string-array name="bgcolor_entries">
+        <item>Siyah</item>
+        <item>Beyaz</item>
+        <item>Gri</item>
+    </string-array>
+    <string-array name="bgcolor_values">
+        <item>black</item>
+        <item>white</item>
+        <item>gray</item>
+    </string-array>
+    <string-array name="quality_entries">
+        <item>HD (720p)</item>
+        <item>Full HD (1080p)</item>
+        <item>4K</item>
+    </string-array>
+    <string-array name="quality_values">
+        <item>hd</item>
+        <item>fhd</item>
+        <item>uhd</item>
+    </string-array>
+</resources>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kamera Damga</string>
+    <string name="mode_photo">Foto</string>
+    <string name="mode_video">Video</string>
+    <string name="settings">Einstellungen</string>
+    <string name="saved">Gespeichert</string>
+    <string name="save_error">Speichern fehlgeschlagen</string>
+    <string name="perm_needed">Kamera-Berechtigung erforderlich</string>
+    <string name="alt_fmt">Höhe: %1$.1f m</string>
+    <string name="speed_fmt">Geschwindigkeit: %1$.1f km/h</string>
+    <string name="index_fmt">Nummer: %1$d</string>
+
+    <string name="cat_stamp">Stempel-Infos</string>
+    <string name="cat_look">Aussehen</string>
+    <string name="cat_camera">Kamera</string>
+    <string name="show_datetime">Datum und Uhrzeit</string>
+    <string name="show_address">Adresse</string>
+    <string name="show_coords">Koordinaten</string>
+    <string name="show_alt_speed">Höhe und Geschwindigkeit</string>
+    <string name="show_heading">Kompassrichtung</string>
+    <string name="show_index">Laufende Nummer</string>
+    <string name="custom_text">Eigener Text</string>
+    <string name="position">Position</string>
+    <string name="text_size">Schriftgröße</string>
+    <string name="text_color">Schriftfarbe</string>
+    <string name="bg_color">Hintergrundfarbe</string>
+    <string name="bg_opacity">Hintergrund-Deckkraft (%)</string>
+    <string name="text_opacity">Text-Deckkraft (%)</string>
+    <string name="grid">Raster</string>
+    <string name="shutter_sound">Auslöseton</string>
+    <string name="tap_shoot">Tippen löst Foto aus</string>
+    <string name="mirror_front">Frontkamera spiegeln</string>
+    <string name="keep_original">Originalfoto zusätzlich speichern</string>
+    <string name="video_quality">Videoqualität</string>
+
+    <string-array name="position_entries">
+        <item>Unten rechts</item>
+        <item>Unten links</item>
+        <item>Oben rechts</item>
+        <item>Oben links</item>
+    </string-array>
+    <string-array name="size_entries">
+        <item>Klein</item>
+        <item>Mittel</item>
+        <item>Groß</item>
+    </string-array>
+    <string-array name="color_entries">
+        <item>Weiß</item>
+        <item>Gelb</item>
+        <item>Grün</item>
+        <item>Rot</item>
+        <item>Cyan</item>
+        <item>Schwarz</item>
+    </string-array>
+    <string-array name="bgcolor_entries">
+        <item>Schwarz</item>
+        <item>Weiß</item>
+        <item>Grau</item>
+    </string-array>
+</resources>
