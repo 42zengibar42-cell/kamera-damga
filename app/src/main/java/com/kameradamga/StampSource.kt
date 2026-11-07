@@ -225,7 +225,7 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
     }
 
     private fun buildMap(l: Location): Bitmap? {
-        val z = 19
+        val z = 18
         val n = 1 shl z
         val latR = Math.toRadians(l.latitude)
         val xf = (l.longitude + 180.0) / 360.0 * n
@@ -252,33 +252,39 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
 
         val cx = ((xf - tx) + 1.0) * ts
         val cy = ((yf - ty) + 1.0) * ts
-        val sx = (cx - ts).toFloat().coerceIn(0f, ts.toFloat())
-        val sy = (cy - ts).toFloat().coerceIn(0f, ts.toFloat())
-        val size = ts * 2
+        // Haritadan 320 px'lik kesit al, 2 kat büyüterek 640 px'e yaz: yazılar okunaklı kalır
+        val crop = 320
+        val size = 640
+        val sx = (cx - crop / 2.0).toFloat().coerceIn(0f, (ts * 3 - crop).toFloat())
+        val sy = (cy - crop / 2.0).toFloat().coerceIn(0f, (ts * 3 - crop).toFloat())
         val out = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
         out.density = Bitmap.DENSITY_NONE
         val oc = Canvas(out)
         val srcX = sx.toInt()
         val srcY = sy.toInt()
-        oc.drawBitmap(big, Rect(srcX, srcY, srcX + size, srcY + size), Rect(0, 0, size, size), null)
+        oc.drawBitmap(
+            big, Rect(srcX, srcY, srcX + crop, srcY + crop), Rect(0, 0, size, size),
+            Paint(Paint.FILTER_BITMAP_FLAG)
+        )
         big.recycle()
 
         // İğne
-        val px = cx.toFloat() - srcX
-        val py = cy.toFloat() - srcY
+        val scale = size.toFloat() / crop
+        val px = (cx.toFloat() - srcX) * scale
+        val py = (cy.toFloat() - srcY) * scale
         val white = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
         val red = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.rgb(229, 57, 53) }
-        oc.drawCircle(px, py, 22f, white)
-        oc.drawCircle(px, py, 15f, red)
+        oc.drawCircle(px, py, 26f, white)
+        oc.drawCircle(px, py, 17f, red)
 
         // Kaynak belirtmesi (OpenStreetMap kullanım koşulu)
         val strip = Paint().apply { color = Color.argb(140, 0, 0, 0) }
-        oc.drawRect(0f, size - 30f, size.toFloat(), size.toFloat(), strip)
+        oc.drawRect(0f, size - 36f, size.toFloat(), size.toFloat(), strip)
         val txt = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.WHITE
-            textSize = 20f
+            textSize = 24f
         }
-        oc.drawText("© OpenStreetMap", 10f, size - 9f, txt)
+        oc.drawText("© OpenStreetMap", 12f, size - 11f, txt)
         return out
     }
 
