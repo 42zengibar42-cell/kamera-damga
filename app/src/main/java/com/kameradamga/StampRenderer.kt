@@ -12,8 +12,11 @@ import kotlin.math.min
 /** Damgayı dik duran (upright) bir w x h tuvaline çizer. */
 object StampRenderer {
 
-    fun draw(canvas: Canvas, w: Int, h: Int, lines: List<String>, c: StampConfig, map: Bitmap? = null) {
-        if ((lines.isEmpty() && map == null) || w <= 0 || h <= 0) return
+    fun draw(
+        canvas: Canvas, w: Int, h: Int, lines: List<String>, c: StampConfig,
+        map: Bitmap? = null, heading: Float? = null,
+    ) {
+        if ((lines.isEmpty() && map == null && heading == null) || w <= 0 || h <= 0) return
 
         val size = min(w, h) * c.sizeFactor
         val right = c.position.endsWith("r")
@@ -69,5 +72,51 @@ object StampRenderer {
             }
             canvas.drawRoundRect(rect, radius, radius, border)
         }
+
+        if (heading != null) {
+            // Pusula: yazı altta ise sol üstte, yazı üstte ise sol altta
+            val r = min(w, h) * 0.10f
+            val cx = margin + r
+            val cy = if (bottom) margin + r else h - margin - r
+            drawCompass(canvas, cx, cy, r, heading)
+        }
+    }
+
+    private fun drawCompass(canvas: Canvas, cx: Float, cy: Float, r: Float, heading: Float) {
+        val fill = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.argb(150, 40, 40, 40) }
+        canvas.drawCircle(cx, cy, r, fill)
+        val ring = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            style = Paint.Style.STROKE
+            strokeWidth = r * 0.13f
+            color = Color.argb(220, 95, 95, 95)
+        }
+        canvas.drawCircle(cx, cy, r * 0.93f, ring)
+
+        // Harfler gerçek kuzeye göre döner
+        canvas.save()
+        canvas.rotate(-heading, cx, cy)
+        val tp = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = r * 0.28f
+            typeface = Typeface.DEFAULT_BOLD
+            textAlign = Paint.Align.CENTER
+        }
+        val labels = arrayOf("N", "E", "S", "W")
+        for (i in 0..3) {
+            canvas.save()
+            canvas.rotate(i * 90f, cx, cy)
+            canvas.drawText(labels[i], cx, cy - r * 0.70f + tp.textSize * 0.35f, tp)
+            canvas.restore()
+        }
+        canvas.restore()
+
+        // İbre sabit: baktığın yönü gösterir
+        val needle = Path().apply {
+            moveTo(cx, cy - r * 0.55f)
+            lineTo(cx - r * 0.10f, cy + r * 0.25f)
+            lineTo(cx + r * 0.10f, cy + r * 0.25f)
+            close()
+        }
+        canvas.drawPath(needle, Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.rgb(41, 182, 246) })
     }
 }

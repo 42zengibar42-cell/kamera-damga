@@ -41,7 +41,8 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
     @Volatile var location: Location? = null
         private set
     @Volatile private var addressLines: List<String> = emptyList()
-    @Volatile private var heading: Float = Float.NaN
+    @Volatile var heading: Float = Float.NaN
+        private set
 
     private val lm = ctx.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private val sm = ctx.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -157,7 +158,7 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
     private var lastMapTime = 0L
     @Volatile private var mapBusy = false
     private val tileCache = object : LinkedHashMap<String, Bitmap>(32, 0.75f, true) {
-        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Bitmap>?) = size > 40
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Bitmap>?) = size > 24
     }
 
     private fun maybeFetchMap(l: Location) {
@@ -181,20 +182,28 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         }
     }
 
+    private fun download(url: String): Bitmap? = try {
+        val conn = URL(url).openConnection() as HttpURLConnection
+        conn.connectTimeout = 5000
+        conn.readTimeout = 5000
+        conn.setRequestProperty("User-Agent", "Buradayim/1.0 (Android camera app)")
+        conn.inputStream.use { BitmapFactory.decodeStream(it) }
+    } catch (_: Exception) {
+        null
+    }
+
+    /** 512 px'lik keskin (@2x) harita karosu; olmazsa OSM karosunu büyütür. */
     private fun tile(z: Int, x: Int, y: Int): Bitmap? {
         val key = "$z/$x/$y"
         synchronized(tileCache) { tileCache[key]?.let { return it } }
-        return try {
-            val conn = URL("https://tile.openstreetmap.org/$key.png").openConnection() as HttpURLConnection
-            conn.connectTimeout = 5000
-            conn.readTimeout = 5000
-            conn.setRequestProperty("User-Agent", "Buradayim/1.0 (Android camera app)")
-            conn.inputStream.use { BitmapFactory.decodeStream(it) }?.also {
-                synchronized(tileCache) { tileCache[key] = it }
-            }
-        } catch (_: Exception) {
-            null
+        val sub = "abcd"[(x + y) and 3]
+        var t = download("https://$sub.basemaps.cartocdn.com/rastertiles/voyager/$key@2x.png")
+        if (t == null) {
+            val small = download("https://tile.openstreetmap.org/$key.png")
+            if (small != null) t = Bitmap.createScaledBitmap(small, 512, 512, true)
         }
+        if (t != null) synchronized(tileCache) { tileCache[key] = t }
+        return t
     }
 
     private fun buildMap(l: Location): Bitmap? {
@@ -206,21 +215,23 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         val tx = floor(xf).toInt()
         val ty = floor(yf).toInt()
 
-        val big = Bitmap.createBitmap(768, 768, Bitmap.Config.ARGB_8888)
+        val ts = 512
+        val big = Bitmap.createBitmap(ts * 3, ts * 3, Bitmap.Config.ARGB_8888)
         val bc = Canvas(big)
         var any = false
         for (dy in -1..1) for (dx in -1..1) {
             val t = tile(z, tx + dx, ty + dy) ?: continue
-            bc.drawBitmap(t, ((dx + 1) * 256).toFloat(), ((dy + 1) * 256).toFloat(), null)
+            bc.drawBitmap(t, ((dx + 1) * ts).toFloat(), ((dy + 1) * ts).toFloat(), null)
             any = true
         }
         if (!any) return null
 
-        val cx = ((xf - tx) + 1.0) * 256.0
-        val cy = ((yf - ty) + 1.0) * 256.0
-        val sx = (cx - 256.0).toFloat().coerceIn(0f, 256f)
-        val sy = (cy - 256.0).toFloat().coerceIn(0f, 256f)
-        val out = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888)
+        val cx = ((xf - tx) + 1.0) * ts
+        val cy = ((yf - ty) + 1.0) * ts
+        val sx = (cx - ts).toFloat().coerceIn(0f, ts.toFloat())
+        val sy = (cy - ts).toFloat().coerceIn(0f, ts.toFloat())
+        val size = ts * 2
+        val out = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
         val oc = Canvas(out)
         oc.drawBitmap(big, -sx, -sy, null)
         big.recycle()
@@ -230,17 +241,17 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         val py = cy.toFloat() - sy
         val white = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
         val red = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.rgb(229, 57, 53) }
-        oc.drawCircle(px, py, 22f, white)
-        oc.drawCircle(px, py, 15f, red)
+        oc.drawCircle(px, py, 44f, white)
+        oc.drawCircle(px, py, 30f, red)
 
-        // OpenStreetMap kaynak belirtmesi
+        // Kaynak belirtmesi (OpenStreetMap / CARTO kullanım koşulu)
         val strip = Paint().apply { color = Color.argb(140, 0, 0, 0) }
-        oc.drawRect(0f, 512f - 30f, 512f, 512f, strip)
+        oc.drawRect(0f, size - 56f, size.toFloat(), size.toFloat(), strip)
         val txt = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.WHITE
-            textSize = 20f
+            textSize = 34f
         }
-        oc.drawText("© OpenStreetMap", 10f, 512f - 9f, txt)
+        oc.drawText("© OpenStreetMap © CARTO", 16f, size - 16f, txt)
         return out
     }
 

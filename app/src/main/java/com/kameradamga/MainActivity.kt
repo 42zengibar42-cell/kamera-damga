@@ -26,6 +26,7 @@ import android.view.OrientationEventListener
 import android.view.ScaleGestureDetector
 import android.view.Surface
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -130,6 +131,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Ekran görüntüsü ve ekran kaydı engellensin
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_main)
         prefs = Prefs(this)
         source = StampSource(this)
@@ -330,7 +333,8 @@ class MainActivity : AppCompatActivity() {
         }
         canvas.translate((uw - ucw) / 2f, (uh - uch) / 2f)
         val map = if (prefs.showMap) source.mapBitmap else null
-        StampRenderer.draw(canvas, ucw.toInt(), uch.toInt(), liveLines, cfg, map)
+        val hd = if (prefs.showCompass) source.heading.takeIf { !it.isNaN() } else null
+        StampRenderer.draw(canvas, ucw.toInt(), uch.toInt(), liveLines, cfg, map, hd)
         canvas.restore()
         return true
     }
@@ -440,6 +444,7 @@ class MainActivity : AppCompatActivity() {
         val lines = source.lines(idx)
         val loc = source.location
         val map = if (prefs.showMap) source.mapBitmap else null
+        val hd = if (prefs.showCompass) source.heading.takeIf { !it.isNaN() } else null
         val config = cfg
         val front = lensFacing == CameraSelector.LENS_FACING_FRONT
         val mirror = front && prefs.mirrorFront
@@ -454,7 +459,7 @@ class MainActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(r: ImageCapture.OutputFileResults) {
                     val ok = try {
-                        processPhoto(file, lines, loc, config, map, mirror, keep)
+                        processPhoto(file, lines, loc, config, map, hd, mirror, keep)
                     } catch (e: Throwable) {
                         Log.e("KameraDamga", "Foto işlenemedi", e)
                         false
@@ -475,7 +480,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun processPhoto(
         file: File, lines: List<String>, loc: Location?, config: StampConfig, map: Bitmap?,
-        mirror: Boolean, keepOriginal: Boolean,
+        heading: Float?, mirror: Boolean, keepOriginal: Boolean,
     ): Boolean {
         val stamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
 
@@ -508,7 +513,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (!bmp.isMutable) bmp = bmp.copy(Bitmap.Config.ARGB_8888, true)
 
-        StampRenderer.draw(Canvas(bmp), bmp.width, bmp.height, lines, config, map)
+        StampRenderer.draw(Canvas(bmp), bmp.width, bmp.height, lines, config, map, heading)
 
         val uri = insertMedia(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "IMG_$stamp.jpg", "image/jpeg") { out ->
             bmp.compress(Bitmap.CompressFormat.JPEG, 95, out)

@@ -29,6 +29,11 @@
             android:summary="@string/show_map_summary"
             android:defaultValue="false" />
         <SwitchPreferenceCompat
+            android:key="show_compass"
+            android:title="@string/show_compass"
+            android:summary="@string/show_compass_summary"
+            android:defaultValue="false" />
+        <SwitchPreferenceCompat
             android:key="show_index"
             android:title="@string/show_index"
             android:defaultValue="false" />
