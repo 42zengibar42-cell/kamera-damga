@@ -13,16 +13,26 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import android.os.SystemClock
+import java.net.HttpURLConnection
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.Executors
 import kotlin.math.atan2
 import kotlin.math.cos
+import kotlin.math.floor
+import kotlin.math.ln
 import kotlin.math.roundToInt
 import kotlin.math.sin
+import kotlin.math.tan
 
 /** Konum, adres ve pusula bilgisini toplar; damga satırlarını üretir. */
 class StampSource(private val ctx: Context) : LocationListener, SensorEventListener {
@@ -117,6 +127,101 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         }
     }
 
+    // ---- Mini harita (OpenStreetMap karoları) ----
+    @Volatile var mapBitmap: Bitmap? = null
+        private set
+    private val mapExec = Executors.newSingleThreadExecutor()
+    private var lastMapLoc: Location? = null
+    private var lastMapTime = 0L
+    @Volatile private var mapBusy = false
+    private val tileCache = object : LinkedHashMap<String, Bitmap>(32, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Bitmap>?) = size > 40
+    }
+
+    private fun maybeFetchMap(l: Location) {
+        if (mapBusy) return
+        val now = SystemClock.elapsedRealtime()
+        if (now - lastMapTime < 5_000) return
+        val last = lastMapLoc
+        if (mapBitmap != null && last != null && last.distanceTo(l) < 30f && now - lastMapTime < 300_000) return
+        mapBusy = true
+        lastMapTime = now
+        mapExec.execute {
+            try {
+                buildMap(l)?.let {
+                    mapBitmap = it
+                    lastMapLoc = l
+                }
+            } catch (_: Throwable) {
+            } finally {
+                mapBusy = false
+            }
+        }
+    }
+
+    private fun tile(z: Int, x: Int, y: Int): Bitmap? {
+        val key = "$z/$x/$y"
+        synchronized(tileCache) { tileCache[key]?.let { return it } }
+        return try {
+            val conn = URL("https://tile.openstreetmap.org/$key.png").openConnection() as HttpURLConnection
+            conn.connectTimeout = 5000
+            conn.readTimeout = 5000
+            conn.setRequestProperty("User-Agent", "Buradayim/1.0 (Android camera app)")
+            conn.inputStream.use { BitmapFactory.decodeStream(it) }?.also {
+                synchronized(tileCache) { tileCache[key] = it }
+            }
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private fun buildMap(l: Location): Bitmap? {
+        val z = 17
+        val n = 1 shl z
+        val latR = Math.toRadians(l.latitude)
+        val xf = (l.longitude + 180.0) / 360.0 * n
+        val yf = (1.0 - ln(tan(latR) + 1.0 / cos(latR)) / Math.PI) / 2.0 * n
+        val tx = floor(xf).toInt()
+        val ty = floor(yf).toInt()
+
+        val big = Bitmap.createBitmap(768, 768, Bitmap.Config.ARGB_8888)
+        val bc = Canvas(big)
+        var any = false
+        for (dy in -1..1) for (dx in -1..1) {
+            val t = tile(z, tx + dx, ty + dy) ?: continue
+            bc.drawBitmap(t, ((dx + 1) * 256).toFloat(), ((dy + 1) * 256).toFloat(), null)
+            any = true
+        }
+        if (!any) return null
+
+        val cx = ((xf - tx) + 1.0) * 256.0
+        val cy = ((yf - ty) + 1.0) * 256.0
+        val sx = (cx - 256.0).toFloat().coerceIn(0f, 256f)
+        val sy = (cy - 256.0).toFloat().coerceIn(0f, 256f)
+        val out = Bitmap.createBitmap(512, 512, Bitmap.Config.ARGB_8888)
+        val oc = Canvas(out)
+        oc.drawBitmap(big, -sx, -sy, null)
+        big.recycle()
+
+        // İğne
+        val px = cx.toFloat() - sx
+        val py = cy.toFloat() - sy
+        val white = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
+        val red = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.rgb(229, 57, 53) }
+        oc.drawCircle(px, py, 22f, white)
+        oc.drawCircle(px, py, 15f, red)
+
+        // OpenStreetMap kaynak belirtmesi
+        val strip = Paint().apply { color = Color.argb(140, 0, 0, 0) }
+        oc.drawRect(0f, 512f - 30f, 512f, 512f, strip)
+        val txt = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            color = Color.WHITE
+            textSize = 20f
+        }
+        oc.drawText("© OpenStreetMap", 10f, 512f - 9f, txt)
+        return out
+    }
+
     private fun addressLinesOf(a: Address): List<String> {
         val street = listOfNotNull(a.subThoroughfare, a.thoroughfare).joinToString(" ")
         val parts = listOf(street, a.locality, a.subAdminArea, a.adminArea)
@@ -154,6 +259,7 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
     /** Damga metni. [index] sıra numarasıdır. */
     fun lines(index: Int): List<String> {
         val out = ArrayList<String>()
+        if (prefs.showMap) location?.let { maybeFetchMap(it) }
         if (prefs.showDateTime) {
             out += SimpleDateFormat("d MMM yyyy HH:mm:ss", Locale.getDefault()).format(Date())
         }

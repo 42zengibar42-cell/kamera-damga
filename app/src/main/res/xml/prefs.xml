@@ -24,6 +24,11 @@
             android:title="@string/show_heading"
             android:defaultValue="true" />
         <SwitchPreferenceCompat
+            android:key="show_map"
+            android:title="@string/show_map"
+            android:summary="@string/show_map_summary"
+            android:defaultValue="false" />
+        <SwitchPreferenceCompat
             android:key="show_index"
             android:title="@string/show_index"
             android:defaultValue="false" />

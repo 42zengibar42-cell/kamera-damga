@@ -26,6 +26,7 @@ class Prefs(ctx: Context) {
     val showAltSpeed get() = sp.getBoolean("show_alt_speed", true)
     val showHeading get() = sp.getBoolean("show_heading", true)
     val showIndex get() = sp.getBoolean("show_index", false)
+    val showMap get() = sp.getBoolean("show_map", false)
     val customText get() = sp.getString("custom_text", "") ?: ""
 
     val grid get() = sp.getBoolean("grid", false)

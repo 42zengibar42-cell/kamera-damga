@@ -20,6 +20,8 @@
     <string name="show_alt_speed">Yükseklik ve hız</string>
     <string name="show_heading">Pusula yönü</string>
     <string name="show_index">Sıra numarası</string>
+    <string name="show_map">Mini harita</string>
+    <string name="show_map_summary">Köşeye harita ekler (internet gerekir)</string>
     <string name="custom_text">Kendi yazın</string>
     <string name="position">Konum</string>
     <string name="text_size">Yazı boyutu</string>

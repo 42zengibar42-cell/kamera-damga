@@ -20,6 +20,8 @@
     <string name="show_alt_speed">Höhe und Geschwindigkeit</string>
     <string name="show_heading">Kompassrichtung</string>
     <string name="show_index">Laufende Nummer</string>
+    <string name="show_map">Mini-Karte</string>
+    <string name="show_map_summary">Fügt eine Karte in der Ecke ein (Internet nötig)</string>
     <string name="custom_text">Eigener Text</string>
     <string name="position">Position</string>
     <string name="text_size">Schriftgröße</string>

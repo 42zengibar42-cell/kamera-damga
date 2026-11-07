@@ -329,7 +329,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
         canvas.translate((uw - ucw) / 2f, (uh - uch) / 2f)
-        StampRenderer.draw(canvas, ucw.toInt(), uch.toInt(), liveLines, cfg)
+        val map = if (prefs.showMap) source.mapBitmap else null
+        StampRenderer.draw(canvas, ucw.toInt(), uch.toInt(), liveLines, cfg, map)
         canvas.restore()
         return true
     }
@@ -438,6 +439,7 @@ class MainActivity : AppCompatActivity() {
         prefs.index = idx
         val lines = source.lines(idx)
         val loc = source.location
+        val map = if (prefs.showMap) source.mapBitmap else null
         val config = cfg
         val front = lensFacing == CameraSelector.LENS_FACING_FRONT
         val mirror = front && prefs.mirrorFront
@@ -452,7 +454,7 @@ class MainActivity : AppCompatActivity() {
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(r: ImageCapture.OutputFileResults) {
                     val ok = try {
-                        processPhoto(file, lines, loc, config, mirror, keep)
+                        processPhoto(file, lines, loc, config, map, mirror, keep)
                     } catch (e: Throwable) {
                         Log.e("KameraDamga", "Foto işlenemedi", e)
                         false
@@ -472,7 +474,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun processPhoto(
-        file: File, lines: List<String>, loc: Location?, config: StampConfig,
+        file: File, lines: List<String>, loc: Location?, config: StampConfig, map: Bitmap?,
         mirror: Boolean, keepOriginal: Boolean,
     ): Boolean {
         val stamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
@@ -506,7 +508,7 @@ class MainActivity : AppCompatActivity() {
         }
         if (!bmp.isMutable) bmp = bmp.copy(Bitmap.Config.ARGB_8888, true)
 
-        StampRenderer.draw(Canvas(bmp), bmp.width, bmp.height, lines, config)
+        StampRenderer.draw(Canvas(bmp), bmp.width, bmp.height, lines, config, map)
 
         val uri = insertMedia(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "IMG_$stamp.jpg", "image/jpeg") { out ->
             bmp.compress(Bitmap.CompressFormat.JPEG, 95, out)
