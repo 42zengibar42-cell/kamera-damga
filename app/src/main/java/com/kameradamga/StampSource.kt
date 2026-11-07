@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
@@ -187,7 +188,11 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         conn.connectTimeout = 5000
         conn.readTimeout = 5000
         conn.setRequestProperty("User-Agent", "Buradayim/1.0 (Android camera app)")
-        conn.inputStream.use { BitmapFactory.decodeStream(it) }
+        val opts = BitmapFactory.Options().apply {
+            inScaled = false
+            inPreferredConfig = Bitmap.Config.ARGB_8888
+        }
+        conn.inputStream.use { BitmapFactory.decodeStream(it, null, opts) }
     } catch (_: Exception) {
         null
     }
@@ -217,11 +222,17 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
 
         val ts = 512
         val big = Bitmap.createBitmap(ts * 3, ts * 3, Bitmap.Config.ARGB_8888)
+        big.density = Bitmap.DENSITY_NONE
         val bc = Canvas(big)
+        bc.drawColor(Color.rgb(230, 230, 230))
+        val tp = Paint(Paint.FILTER_BITMAP_FLAG)
         var any = false
         for (dy in -1..1) for (dx in -1..1) {
             val t = tile(z, tx + dx, ty + dy) ?: continue
-            bc.drawBitmap(t, ((dx + 1) * ts).toFloat(), ((dy + 1) * ts).toFloat(), null)
+            // Yoğunluktan bağımsız: her karo tam 512x512 alana çizilir
+            val left = (dx + 1) * ts
+            val top = (dy + 1) * ts
+            bc.drawBitmap(t, null, Rect(left, top, left + ts, top + ts), tp)
             any = true
         }
         if (!any) return null
@@ -232,13 +243,16 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         val sy = (cy - ts).toFloat().coerceIn(0f, ts.toFloat())
         val size = ts * 2
         val out = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        out.density = Bitmap.DENSITY_NONE
         val oc = Canvas(out)
-        oc.drawBitmap(big, -sx, -sy, null)
+        val srcX = sx.toInt()
+        val srcY = sy.toInt()
+        oc.drawBitmap(big, Rect(srcX, srcY, srcX + size, srcY + size), Rect(0, 0, size, size), null)
         big.recycle()
 
         // İğne
-        val px = cx.toFloat() - sx
-        val py = cy.toFloat() - sy
+        val px = cx.toFloat() - srcX
+        val py = cy.toFloat() - srcY
         val white = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.WHITE }
         val red = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Color.rgb(229, 57, 53) }
         oc.drawCircle(px, py, 44f, white)
