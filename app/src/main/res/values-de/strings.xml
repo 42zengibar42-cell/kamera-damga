@@ -4,6 +4,7 @@
     <string name="mode_photo">Foto</string>
     <string name="mode_video">Video</string>
     <string name="settings">Einstellungen</string>
+    <string name="mock_warning">⚠ Gefälschter Standort erkannt</string>
     <string name="saved">Gespeichert</string>
     <string name="save_error">Speichern fehlgeschlagen</string>
     <string name="perm_needed">Kamera-Berechtigung erforderlich</string>

@@ -4,6 +4,7 @@
     <string name="mode_photo">Fotoğraf</string>
     <string name="mode_video">Video</string>
     <string name="settings">Ayarlar</string>
+    <string name="mock_warning">⚠ Sahte konum algılandı</string>
     <string name="saved">Kaydedildi</string>
     <string name="save_error">Kaydedilemedi</string>
     <string name="perm_needed">Kamera izni gerekli</string>

@@ -18,6 +18,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import java.net.HttpURLConnection
@@ -98,15 +99,36 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
     override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
     }
 
+    private fun isMockLocation(l: Location): Boolean =
+        if (Build.VERSION.SDK_INT >= 31) l.isMock else @Suppress("DEPRECATION") l.isFromMockProvider
+
     private fun accept(l: Location) {
         val cur = location
         if (cur == null || l.provider == LocationManager.GPS_PROVIDER ||
             l.time - cur.time > 10_000 || l.accuracy <= cur.accuracy
         ) {
             location = l
+            mock = isMockLocation(l)
             maybeGeocode(l)
         }
+        // Gerçek GPS fix'i: telefonun saatinden bağımsız doğru saati al
+        if (l.provider == LocationManager.GPS_PROVIDER && !isMockLocation(l)) {
+            val ageMs = (SystemClock.elapsedRealtimeNanos() - l.elapsedRealtimeNanos) / 1_000_000
+            if (ageMs in 0..60_000) {
+                gpsBaseUtc = l.time + ageMs
+                gpsBaseElapsed = SystemClock.elapsedRealtime()
+            }
+        }
     }
+
+    @Volatile private var mock = false
+    @Volatile private var gpsBaseUtc = 0L
+    @Volatile private var gpsBaseElapsed = 0L
+
+    /** GPS saati varsa onunla, yoksa telefon saatiyle şimdiki zaman (ms). */
+    fun nowMs(): Long =
+        if (gpsBaseUtc != 0L) gpsBaseUtc + (SystemClock.elapsedRealtime() - gpsBaseElapsed)
+        else System.currentTimeMillis()
 
     private fun maybeGeocode(l: Location) {
         val now = SystemClock.elapsedRealtime()
@@ -176,7 +198,7 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
     }
 
     private fun buildMap(l: Location): Bitmap? {
-        val z = 17
+        val z = 18
         val n = 1 shl z
         val latR = Math.toRadians(l.latitude)
         val xf = (l.longitude + 180.0) / 360.0 * n
@@ -261,8 +283,9 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         val out = ArrayList<String>()
         if (prefs.showMap) location?.let { maybeFetchMap(it) }
         if (prefs.showDateTime) {
-            out += SimpleDateFormat("d MMM yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+            out += SimpleDateFormat("d MMM yyyy HH:mm:ss", Locale.getDefault()).format(Date(nowMs()))
         }
+        if (mock) out += ctx.getString(R.string.mock_warning)
         val hd = heading
         if (prefs.showHeading && !hd.isNaN()) {
             out += "${hd.roundToInt() % 360}° ${cardinal(hd)}"
