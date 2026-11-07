@@ -26,6 +26,7 @@ import android.view.OrientationEventListener
 import android.view.ScaleGestureDetector
 import android.view.Surface
 import android.view.View
+import android.view.WindowManager
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -188,6 +189,9 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         cfg = prefs.config()
+        // Ekran görüntüsü / ekran kaydı engeli (ayarlardan kapatılabilir)
+        if (prefs.blockScreenshot) window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
+        else window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         grid.visibility = if (prefs.grid) View.VISIBLE else View.GONE
         source.start()
         orientationListener.enable()

@@ -21,6 +21,8 @@
     <string name="show_alt_speed">Höhe und Geschwindigkeit</string>
     <string name="show_heading">Kompassrichtung</string>
     <string name="show_index">Laufende Nummer</string>
+    <string name="block_screenshot">Screenshots blockieren</string>
+    <string name="block_screenshot_summary">Im Kamerabild sind keine Screenshots oder Bildschirmaufnahmen möglich</string>
     <string name="show_compass">Kompass-Anzeige</string>
     <string name="show_compass_summary">Zeichnet einen Kompass in die Ecke</string>
     <string name="show_map">Mini-Karte</string>

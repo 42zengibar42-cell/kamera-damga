@@ -113,6 +113,11 @@
             android:title="@string/shutter_sound"
             android:defaultValue="true" />
         <SwitchPreferenceCompat
+            android:key="block_screenshot"
+            android:title="@string/block_screenshot"
+            android:summary="@string/block_screenshot_summary"
+            android:defaultValue="true" />
+        <SwitchPreferenceCompat
             android:key="grid"
             android:title="@string/grid"
             android:defaultValue="false" />

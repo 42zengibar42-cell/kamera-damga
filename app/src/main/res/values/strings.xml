@@ -21,6 +21,8 @@
     <string name="show_alt_speed">Yükseklik ve hız</string>
     <string name="show_heading">Pusula yönü</string>
     <string name="show_index">Sıra numarası</string>
+    <string name="block_screenshot">Ekran görüntüsünü engelle</string>
+    <string name="block_screenshot_summary">Kamera ekranında ekran görüntüsü ve ekran kaydı alınamaz</string>
     <string name="show_compass">Pusula kadranı</string>
     <string name="show_compass_summary">Köşeye pusula çizer</string>
     <string name="show_map">Mini harita</string>
