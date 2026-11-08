@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_photo">Photo</string>
+    <string name="mode_video">Video</string>
+    <string name="settings">Settings</string>
+    <string name="mock_warning">⚠ Fake location detected</string>
+    <string name="saved">Saved</string>
+    <string name="save_error">Could not save</string>
+    <string name="perm_needed">Camera permission required</string>
+    <string name="alt_fmt">Altitude: %1$s m</string>
+    <string name="speed_fmt">Speed: %1$s km/h</string>
+    <string name="index_fmt">No.: %1$s</string>
+
+    <string name="cat_stamp">Stamp information</string>
+    <string name="cat_look">Appearance</string>
+    <string name="cat_camera">Camera</string>
+    <string name="show_datetime">Date and time</string>
+    <string name="show_address">Address</string>
+    <string name="show_coords">Coordinates</string>
+    <string name="show_alt_speed">Altitude and speed</string>
+    <string name="show_heading">Compass direction</string>
+    <string name="show_compass">Compass dial</string>
+    <string name="show_compass_summary">Draws a compass in the corner</string>
+    <string name="show_map">Mini map</string>
+    <string name="show_map_summary">Adds a map in the corner (internet required)</string>
+    <string name="show_index">Sequence number</string>
+    <string name="custom_text">Custom text</string>
+    <string name="position">Position</string>
+    <string name="text_size">Text size</string>
+    <string name="text_color">Text color</string>
+    <string name="bg_color">Background color</string>
+    <string name="bg_opacity">Background opacity (%)</string>
+    <string name="text_opacity">Text opacity (%)</string>
+    <string name="grid">Grid</string>
+    <string name="shutter_sound">Shutter sound</string>
+    <string name="tap_shoot">Tap to take photo</string>
+    <string name="mirror_front">Mirror front camera</string>
+    <string name="keep_original">Also keep original photo</string>
+    <string name="video_quality">Video quality</string>
+    <string name="language">Language</string>
+    <string name="language_system">System default</string>
+
+    <string-array name="position_entries">
+        <item>Bottom right</item>
+        <item>Bottom left</item>
+        <item>Top right</item>
+        <item>Top left</item>
+    </string-array>
+    <string-array name="size_entries">
+        <item>Small</item>
+        <item>Medium</item>
+        <item>Large</item>
+    </string-array>
+    <string-array name="color_entries">
+        <item>White</item>
+        <item>Yellow</item>
+        <item>Green</item>
+        <item>Red</item>
+        <item>Cyan</item>
+        <item>Black</item>
+    </string-array>
+    <string-array name="bgcolor_entries">
+        <item>Black</item>
+        <item>White</item>
+        <item>Gray</item>
+    </string-array>
+</resources>

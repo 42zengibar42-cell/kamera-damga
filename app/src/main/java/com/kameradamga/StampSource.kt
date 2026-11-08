@@ -327,7 +327,8 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
         val out = ArrayList<String>()
         if (prefs.showMap) location?.let { maybeFetchMap(it) }
         if (prefs.showDateTime) {
-            out += SimpleDateFormat("d MMM yyyy HH:mm:ss", Locale.getDefault()).format(Date(nowMs()))
+            val loc = Locale.Builder().setLocale(Locale.getDefault()).setUnicodeLocaleKeyword("nu", "latn").build()
+            out += SimpleDateFormat("d MMM yyyy HH:mm:ss", loc).format(Date(nowMs()))
         }
         if (mock) out += ctx.getString(R.string.mock_warning)
         val hd = heading
@@ -340,12 +341,12 @@ class StampSource(private val ctx: Context) : LocationListener, SensorEventListe
             out += String.format(Locale.US, "%.6f, %.6f", l.latitude, l.longitude)
         }
         if (prefs.showAltSpeed && l != null) {
-            out += ctx.getString(R.string.alt_fmt, l.altitude)
-            out += ctx.getString(R.string.speed_fmt, l.speed * 3.6)
+            out += ctx.getString(R.string.alt_fmt, String.format(Locale.US, "%.1f", l.altitude))
+            out += ctx.getString(R.string.speed_fmt, String.format(Locale.US, "%.1f", l.speed * 3.6))
         }
         val custom = prefs.customText.trim()
         if (custom.isNotEmpty()) out += custom.lines().filter { it.isNotBlank() }
-        if (prefs.showIndex) out += ctx.getString(R.string.index_fmt, index)
+        if (prefs.showIndex) out += ctx.getString(R.string.index_fmt, index.toString())
         return out
     }
 }

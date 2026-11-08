@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_photo">Photo</string>
+    <string name="mode_video">Vidéo</string>
+    <string name="settings">Réglages</string>
+    <string name="mock_warning">⚠ Fausse position détectée</string>
+    <string name="saved">Enregistré</string>
+    <string name="save_error">Échec de l\'enregistrement</string>
+    <string name="perm_needed">Autorisation de la caméra requise</string>
+    <string name="alt_fmt">Altitude : %1$s m</string>
+    <string name="speed_fmt">Vitesse : %1$s km/h</string>
+    <string name="index_fmt">N° : %1$s</string>
+
+    <string name="cat_stamp">Informations incrustées</string>
+    <string name="cat_look">Apparence</string>
+    <string name="cat_camera">Caméra</string>
+    <string name="show_datetime">Date et heure</string>
+    <string name="show_address">Adresse</string>
+    <string name="show_coords">Coordonnées</string>
+    <string name="show_alt_speed">Altitude et vitesse</string>
+    <string name="show_heading">Direction de la boussole</string>
+    <string name="show_compass">Cadran de boussole</string>
+    <string name="show_compass_summary">Dessine une boussole dans le coin</string>
+    <string name="show_map">Mini-carte</string>
+    <string name="show_map_summary">Ajoute une carte dans le coin (Internet requis)</string>
+    <string name="show_index">Numéro d\'ordre</string>
+    <string name="custom_text">Texte personnalisé</string>
+    <string name="position">Position</string>
+    <string name="text_size">Taille du texte</string>
+    <string name="text_color">Couleur du texte</string>
+    <string name="bg_color">Couleur de fond</string>
+    <string name="bg_opacity">Opacité du fond (%)</string>
+    <string name="text_opacity">Opacité du texte (%)</string>
+    <string name="grid">Grille</string>
+    <string name="shutter_sound">Son de l\'obturateur</string>
+    <string name="tap_shoot">Toucher pour prendre une photo</string>
+    <string name="mirror_front">Miroir caméra frontale</string>
+    <string name="keep_original">Conserver aussi la photo d\'origine</string>
+    <string name="video_quality">Qualité vidéo</string>
+    <string name="language">Langue</string>
+    <string name="language_system">Par défaut du système</string>
+
+    <string-array name="position_entries">
+        <item>En bas à droite</item>
+        <item>En bas à gauche</item>
+        <item>En haut à droite</item>
+        <item>En haut à gauche</item>
+    </string-array>
+    <string-array name="size_entries">
+        <item>Petit</item>
+        <item>Moyen</item>
+        <item>Grand</item>
+    </string-array>
+    <string-array name="color_entries">
+        <item>Blanc</item>
+        <item>Jaune</item>
+        <item>Vert</item>
+        <item>Rouge</item>
+        <item>Cyan</item>
+        <item>Noir</item>
+    </string-array>
+    <string-array name="bgcolor_entries">
+        <item>Noir</item>
+        <item>Blanc</item>
+        <item>Gris</item>
+    </string-array>
+</resources>

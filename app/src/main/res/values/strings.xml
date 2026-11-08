@@ -8,9 +8,9 @@
     <string name="saved">Kaydedildi</string>
     <string name="save_error">Kaydedilemedi</string>
     <string name="perm_needed">Kamera izni gerekli</string>
-    <string name="alt_fmt">Yükseklik: %1$.1f m</string>
-    <string name="speed_fmt">Hız: %1$.1f km/s</string>
-    <string name="index_fmt">Sıra no: %1$d</string>
+    <string name="alt_fmt">Yükseklik: %1$s m</string>
+    <string name="speed_fmt">Hız: %1$s km/s</string>
+    <string name="index_fmt">Sıra no: %1$s</string>
 
     <string name="cat_stamp">Damga bilgileri</string>
     <string name="cat_look">Görünüm</string>
@@ -20,13 +20,11 @@
     <string name="show_coords">Koordinatlar</string>
     <string name="show_alt_speed">Yükseklik ve hız</string>
     <string name="show_heading">Pusula yönü</string>
-    <string name="show_index">Sıra numarası</string>
-    <string name="block_screenshot">Ekran görüntüsünü engelle</string>
-    <string name="block_screenshot_summary">Kamera ekranında ekran görüntüsü ve ekran kaydı alınamaz</string>
     <string name="show_compass">Pusula kadranı</string>
     <string name="show_compass_summary">Köşeye pusula çizer</string>
     <string name="show_map">Mini harita</string>
     <string name="show_map_summary">Köşeye harita ekler (internet gerekir)</string>
+    <string name="show_index">Sıra numarası</string>
     <string name="custom_text">Kendi yazın</string>
     <string name="position">Konum</string>
     <string name="text_size">Yazı boyutu</string>
@@ -40,6 +38,27 @@
     <string name="mirror_front">Ön kamerayı aynala</string>
     <string name="keep_original">Orijinal fotoğrafı da sakla</string>
     <string name="video_quality">Video kalitesi</string>
+    <string name="language">Dil</string>
+    <string name="language_system">Sistem varsayılanı</string>
+
+    <string-array name="language_entries">
+        <item>@string/language_system</item>
+        <item>Türkçe</item>
+        <item>Deutsch</item>
+        <item>English</item>
+        <item>العربية</item>
+        <item>Русский</item>
+        <item>Français</item>
+    </string-array>
+    <string-array name="language_values">
+        <item>system</item>
+        <item>tr</item>
+        <item>de</item>
+        <item>en</item>
+        <item>ar</item>
+        <item>ru</item>
+        <item>fr</item>
+    </string-array>
 
     <string-array name="position_entries">
         <item>Sağ alt</item>

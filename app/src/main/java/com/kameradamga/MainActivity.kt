@@ -139,6 +139,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Ekran görüntüsü ve ekran kaydı her zaman engelli
+        window.setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE)
         setContentView(R.layout.activity_main)
         prefs = Prefs(this)
         source = StampSource(this)
@@ -189,9 +191,6 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         cfg = prefs.config()
-        // Ekran görüntüsü / ekran kaydı engeli (ayarlardan kapatılabilir)
-        if (prefs.blockScreenshot) window.addFlags(WindowManager.LayoutParams.FLAG_SECURE)
-        else window.clearFlags(WindowManager.LayoutParams.FLAG_SECURE)
         grid.visibility = if (prefs.grid) View.VISIBLE else View.GONE
         source.start()
         orientationListener.enable()

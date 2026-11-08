@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_photo">Фото</string>
+    <string name="mode_video">Видео</string>
+    <string name="settings">Настройки</string>
+    <string name="mock_warning">⚠ Обнаружена подмена геопозиции</string>
+    <string name="saved">Сохранено</string>
+    <string name="save_error">Не удалось сохранить</string>
+    <string name="perm_needed">Нужно разрешение камеры</string>
+    <string name="alt_fmt">Высота: %1$s м</string>
+    <string name="speed_fmt">Скорость: %1$s км/ч</string>
+    <string name="index_fmt">№: %1$s</string>
+
+    <string name="cat_stamp">Данные на снимке</string>
+    <string name="cat_look">Внешний вид</string>
+    <string name="cat_camera">Камера</string>
+    <string name="show_datetime">Дата и время</string>
+    <string name="show_address">Адрес</string>
+    <string name="show_coords">Координаты</string>
+    <string name="show_alt_speed">Высота и скорость</string>
+    <string name="show_heading">Направление компаса</string>
+    <string name="show_compass">Циферблат компаса</string>
+    <string name="show_compass_summary">Рисует компас в углу</string>
+    <string name="show_map">Мини-карта</string>
+    <string name="show_map_summary">Добавляет карту в углу (нужен интернет)</string>
+    <string name="show_index">Порядковый номер</string>
+    <string name="custom_text">Свой текст</string>
+    <string name="position">Положение</string>
+    <string name="text_size">Размер текста</string>
+    <string name="text_color">Цвет текста</string>
+    <string name="bg_color">Цвет фона</string>
+    <string name="bg_opacity">Прозрачность фона (%)</string>
+    <string name="text_opacity">Непрозрачность текста (%)</string>
+    <string name="grid">Сетка</string>
+    <string name="shutter_sound">Звук затвора</string>
+    <string name="tap_shoot">Фото по касанию</string>
+    <string name="mirror_front">Зеркалить фронтальную камеру</string>
+    <string name="keep_original">Сохранять и оригинал фото</string>
+    <string name="video_quality">Качество видео</string>
+    <string name="language">Язык</string>
+    <string name="language_system">Как в системе</string>
+
+    <string-array name="position_entries">
+        <item>Справа внизу</item>
+        <item>Слева внизу</item>
+        <item>Справа вверху</item>
+        <item>Слева вверху</item>
+    </string-array>
+    <string-array name="size_entries">
+        <item>Маленький</item>
+        <item>Средний</item>
+        <item>Большой</item>
+    </string-array>
+    <string-array name="color_entries">
+        <item>Белый</item>
+        <item>Жёлтый</item>
+        <item>Зелёный</item>
+        <item>Красный</item>
+        <item>Голубой</item>
+        <item>Чёрный</item>
+    </string-array>
+    <string-array name="bgcolor_entries">
+        <item>Чёрный</item>
+        <item>Белый</item>
+        <item>Серый</item>
+    </string-array>
+</resources>

@@ -27,7 +27,6 @@ class Prefs(ctx: Context) {
     val showHeading get() = sp.getBoolean("show_heading", true)
     val showIndex get() = sp.getBoolean("show_index", false)
     val showMap get() = sp.getBoolean("show_map", false)
-    val blockScreenshot get() = sp.getBoolean("block_screenshot", true)
     val showCompass get() = sp.getBoolean("show_compass", false)
     val customText get() = sp.getString("custom_text", "") ?: ""
 

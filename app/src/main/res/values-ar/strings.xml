@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mode_photo">صورة</string>
+    <string name="mode_video">فيديو</string>
+    <string name="settings">الإعدادات</string>
+    <string name="mock_warning">⚠ تم اكتشاف موقع مزيّف</string>
+    <string name="saved">تم الحفظ</string>
+    <string name="save_error">تعذّر الحفظ</string>
+    <string name="perm_needed">إذن الكاميرا مطلوب</string>
+    <string name="alt_fmt">الارتفاع: %1$s م</string>
+    <string name="speed_fmt">السرعة: %1$s كم/س</string>
+    <string name="index_fmt">الرقم: %1$s</string>
+
+    <string name="cat_stamp">معلومات الختم</string>
+    <string name="cat_look">المظهر</string>
+    <string name="cat_camera">الكاميرا</string>
+    <string name="show_datetime">التاريخ والوقت</string>
+    <string name="show_address">العنوان</string>
+    <string name="show_coords">الإحداثيات</string>
+    <string name="show_alt_speed">الارتفاع والسرعة</string>
+    <string name="show_heading">اتجاه البوصلة</string>
+    <string name="show_compass">قرص البوصلة</string>
+    <string name="show_compass_summary">يرسم بوصلة في الزاوية</string>
+    <string name="show_map">خريطة مصغّرة</string>
+    <string name="show_map_summary">يضيف خريطة في الزاوية (يلزم الإنترنت)</string>
+    <string name="show_index">رقم تسلسلي</string>
+    <string name="custom_text">نص مخصص</string>
+    <string name="position">الموضع</string>
+    <string name="text_size">حجم النص</string>
+    <string name="text_color">لون النص</string>
+    <string name="bg_color">لون الخلفية</string>
+    <string name="bg_opacity">شفافية الخلفية (%)</string>
+    <string name="text_opacity">عتامة النص (%)</string>
+    <string name="grid">الشبكة</string>
+    <string name="shutter_sound">صوت الغالق</string>
+    <string name="tap_shoot">اللمس لالتقاط صورة</string>
+    <string name="mirror_front">عكس الكاميرا الأمامية</string>
+    <string name="keep_original">حفظ الصورة الأصلية أيضًا</string>
+    <string name="video_quality">جودة الفيديو</string>
+    <string name="language">اللغة</string>
+    <string name="language_system">افتراضي النظام</string>
+
+    <string-array name="position_entries">
+        <item>أسفل اليمين</item>
+        <item>أسفل اليسار</item>
+        <item>أعلى اليمين</item>
+        <item>أعلى اليسار</item>
+    </string-array>
+    <string-array name="size_entries">
+        <item>صغير</item>
+        <item>متوسط</item>
+        <item>كبير</item>
+    </string-array>
+    <string-array name="color_entries">
+        <item>أبيض</item>
+        <item>أصفر</item>
+        <item>أخضر</item>
+        <item>أحمر</item>
+        <item>سماوي</item>
+        <item>أسود</item>
+    </string-array>
+    <string-array name="bgcolor_entries">
+        <item>أسود</item>
+        <item>أبيض</item>
+        <item>رمادي</item>
+    </string-array>
+</resources>

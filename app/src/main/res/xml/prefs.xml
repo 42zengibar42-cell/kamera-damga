@@ -2,6 +2,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <ListPreference
+        android:key="language"
+        android:title="@string/language"
+        android:entries="@array/language_entries"
+        android:entryValues="@array/language_values"
+        android:defaultValue="system"
+        app:useSimpleSummaryProvider="true" />
+
     <PreferenceCategory android:title="@string/cat_stamp">
         <SwitchPreferenceCompat
             android:key="show_datetime"
@@ -111,11 +119,6 @@
         <SwitchPreferenceCompat
             android:key="shutter_sound"
             android:title="@string/shutter_sound"
-            android:defaultValue="true" />
-        <SwitchPreferenceCompat
-            android:key="block_screenshot"
-            android:title="@string/block_screenshot"
-            android:summary="@string/block_screenshot_summary"
             android:defaultValue="true" />
         <SwitchPreferenceCompat
             android:key="grid"

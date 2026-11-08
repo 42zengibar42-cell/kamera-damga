@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Buradayım</string>
     <string name="mode_photo">Foto</string>
     <string name="mode_video">Video</string>
     <string name="settings">Einstellungen</string>
@@ -8,9 +7,9 @@
     <string name="saved">Gespeichert</string>
     <string name="save_error">Speichern fehlgeschlagen</string>
     <string name="perm_needed">Kamera-Berechtigung erforderlich</string>
-    <string name="alt_fmt">Höhe: %1$.1f m</string>
-    <string name="speed_fmt">Geschwindigkeit: %1$.1f km/h</string>
-    <string name="index_fmt">Nummer: %1$d</string>
+    <string name="alt_fmt">Höhe: %1$s m</string>
+    <string name="speed_fmt">Geschwindigkeit: %1$s km/h</string>
+    <string name="index_fmt">Nummer: %1$s</string>
 
     <string name="cat_stamp">Stempel-Infos</string>
     <string name="cat_look">Aussehen</string>
@@ -20,13 +19,11 @@
     <string name="show_coords">Koordinaten</string>
     <string name="show_alt_speed">Höhe und Geschwindigkeit</string>
     <string name="show_heading">Kompassrichtung</string>
-    <string name="show_index">Laufende Nummer</string>
-    <string name="block_screenshot">Screenshots blockieren</string>
-    <string name="block_screenshot_summary">Im Kamerabild sind keine Screenshots oder Bildschirmaufnahmen möglich</string>
     <string name="show_compass">Kompass-Anzeige</string>
     <string name="show_compass_summary">Zeichnet einen Kompass in die Ecke</string>
     <string name="show_map">Mini-Karte</string>
     <string name="show_map_summary">Fügt eine Karte in der Ecke ein (Internet nötig)</string>
+    <string name="show_index">Laufende Nummer</string>
     <string name="custom_text">Eigener Text</string>
     <string name="position">Position</string>
     <string name="text_size">Schriftgröße</string>
@@ -40,6 +37,8 @@
     <string name="mirror_front">Frontkamera spiegeln</string>
     <string name="keep_original">Originalfoto zusätzlich speichern</string>
     <string name="video_quality">Videoqualität</string>
+    <string name="language">Sprache</string>
+    <string name="language_system">Systemstandard</string>
 
     <string-array name="position_entries">
         <item>Unten rechts</item>
